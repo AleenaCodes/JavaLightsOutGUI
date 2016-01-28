@@ -2,44 +2,44 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-//Tic-Tac-Toe with GUI
+//Lights Out with GUI
 @SuppressWarnings("serial")
-public class TicTacToeGUI extends JFrame{
-  //Constants for game board
-  public static final int rows = 3;
-  public static final int cols = 3;
+public class LightsOutGUI extends JFrame{
+  //Constants for game board - DONE
+  public static final int rows = 5;
+  public static final int cols = 5;
 
-  //Constants for graphic drawing dimensions
-  public static final int cellSize = 100; //cell width, height
+  //Constants for graphic drawing dimensions - DONE
+  public static final int cellSize = 60; //cell width, height
   public static final int canvasWidth = cellSize * cols;
   public static final int canvasHeight = cellSize * rows;
-  public static final int gridWidth = 8; //gridline width
+  public static final int gridWidth = 4; //gridline width
   public static final int gridWidthHalf = gridWidth/2;
 
-  //Constants for drawing symbols
+  //Constants for drawing symbols - DONE
   public static final int cellPadding = cellSize/6;
   public static final int symbolSize = cellSize - (cellPadding*2);
   public static final int symbolStrokeWidth = 8; //pen stroke width
 
-  //Enum for game states
+  //Enum for game states - DONE
   public enum GameState{
-    Playing, Draw, CrossWon, NoughtWon;
+    Playing, Won;
   }
 
-  //Enum for Symbol
+  //Enum for Symbol - DONE
   public enum Symbol{
-    Empty, Cross, Nought;
+    Black, White;
   }
 
-  private Symbol currentPlayer;
+  //private Symbol currentPlayer; - NOT NEEDED?
   private GameState currentState;
 
   private Symbol[][] board; //game board
   private DrawCanvas canvas; //draw canvas for game board
   private JLabel statusBar; //status bar
 
-  //Game and GUI constructor
-  public TicTacToeGUI(){
+  //Game and GUI constructor - DONE
+  public LightsOutGUI(){
     canvas = new DrawCanvas(); //construct new canvas
     canvas.setPreferredSize(new Dimension(canvasWidth, canvasHeight));
 
@@ -56,10 +56,27 @@ public class TicTacToeGUI extends JFrame{
 
         if(currentState == GameState.Playing){
           if(rowSelected >= 0 && rowSelected < rows && colSelected >= 0
-            && colSelected < cols && board[rowSelected][colSelected] == Symbol.Empty){
-              board[rowSelected][colSelected] = currentPlayer; //make move
-              updateGame(currentPlayer, rowSelected, colSelected); //update state
-              currentPlayer = (currentPlayer == Symbol.Cross) ? Symbol.Nought : Symbol.Cross; //switch player
+            && colSelected < cols){
+              //make move
+              int r = rowSelected;
+              int c = colSelected;
+              if(r != 0){
+                if(board[r-1][c] == Symbol.White){board[r-1][c] = Symbol.Black;}
+                else{board[r-1][c] = Symbol.White;}
+              }
+              if(c != (cols-1)){
+                if(board[r][c+1] == Symbol.White){board[r][c+1] = Symbol.Black;}
+                else{board[r][c+1] = Symbol.White;}
+              }
+              if(r != (rows-1)){
+                if(board[r+1][c] == Symbol.White){board[r+1][c] = Symbol.Black;}
+                else{board[r+1][c] = Symbol.White;}
+              }
+              if(c != 0){
+                if(board[r][c-1] == Symbol.White){board[r][c-1] = Symbol.Black;}
+                else{board[r][c-1] = Symbol.White;}
+              }
+              updateGame(rowSelected, colSelected); //update state
             }
         }
         else{ //game over
@@ -80,37 +97,36 @@ public class TicTacToeGUI extends JFrame{
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     pack(); //pack all components in JFrame
-    setTitle("Tic Tac Toe");
+    setTitle("Lights Out");
     setVisible(true); //show this JFrame
 
     board = new Symbol[rows][cols]; //allocate array
     initGame(); //initialise game board contents and game variables
   }
 
-  //Initialise game board contents and status
+  //Change cell
+
+
+  //Initialise game board contents and status - DONE - MAKE GAME BOARD
   public void initGame(){
     for(int row = 0; row < rows; ++row){
       for(int col = 0; col < cols; ++col){
-        board[row][col] = Symbol.Empty; //all cells empty
+        board[row][col] = Symbol.White; //all lights on
       }
     }
     currentState = GameState.Playing; //ready to play
-    currentPlayer = Symbol.Cross; //cross plays first
   }
 
-  //Update currentState after player has made move
-  public void updateGame(Symbol theSymbol, int rowSelected, int colSelected){
-    if(hasWon(theSymbol, rowSelected, colSelected)){//check for win
-      currentState = (theSymbol == Symbol.Cross) ? GameState.CrossWon : GameState.NoughtWon;
-    }
-    else if (isDraw()){ //check for draw
-      currentState = GameState.Draw;
+  //Update currentState after player has made move - DONE
+  public void updateGame(int rowSelected, int colSelected){
+    if(hasWon(rowSelected, colSelected)){//check for win
+      currentState = GameState.Won;
     }
     //Otherwise no change to state
   }
 
-  //Return true if game is a draw
-  public boolean isDraw() {
+  //Return true if game is a draw - UNUSED?
+  /*public boolean isDraw() {
       for (int row = 0; row < rows; ++row) {
          for (int col = 0; col < cols; ++col) {
             if (board[row][col] == Symbol.Empty) {
@@ -119,27 +135,21 @@ public class TicTacToeGUI extends JFrame{
          }
       }
       return true;  // no more empty cells - draw
+   }*/
+
+   //Return true if player has won - DONE
+   public boolean hasWon(int rowSelected, int colSelected) {
+     for (int row = 0; row < rows; ++row) {
+        for (int col = 0; col < cols; ++col) {
+           if (board[row][col] == Symbol.White) {
+              return false; // light on found - player hasn't won - exit
+           }
+        }
+     }
+     return true; //else all lights off - player has won!
    }
 
-   //Return true if player with theSymbol has won
-   public boolean hasWon(Symbol theSymbol, int rowSelected, int colSelected) {
-      return (board[rowSelected][0] == theSymbol  // 3 in a row
-            && board[rowSelected][1] == theSymbol
-            && board[rowSelected][2] == theSymbol
-       || board[0][colSelected] == theSymbol      // 3 in a col
-            && board[1][colSelected] == theSymbol
-            && board[2][colSelected] == theSymbol
-       || rowSelected == colSelected            // 3 in a \ diagonal
-            && board[0][0] == theSymbol
-            && board[1][1] == theSymbol
-            && board[2][2] == theSymbol
-       || rowSelected + colSelected == 2  // 3 in a / diagonal
-            && board[0][2] == theSymbol
-            && board[1][1] == theSymbol
-            && board[2][0] == theSymbol);
-   }
-
-   //Class used for custom graphics drawing
+   //Class used for custom graphics drawing - DONE, REMAKE SYMBOLS
    class DrawCanvas extends JPanel{
      @Override
      public void paintComponent(Graphics g){
@@ -165,14 +175,14 @@ public class TicTacToeGUI extends JFrame{
          for(int col = 0; col < cols; ++col){
            int x1 = col * cellSize + cellPadding;
            int y1 = row * cellSize + cellPadding;
-           if(board[row][col] == Symbol.Cross){
+           if(board[row][col] == Symbol.White){
              g2d.setColor(Color.RED);
              int x2 = (col+1) * cellSize - cellPadding;
              int y2 = (row+1) * cellSize - cellPadding;
              g2d.drawLine(x1, y1, x2, y2);
              g2d.drawLine(x2, y1, x1, y2);
            }
-           else if(board[row][col] == Symbol.Nought){
+           else if(board[row][col] == Symbol.Black){
              g2d.setColor(Color.BLUE);
              g2d.drawOval(x1, y1, symbolSize, symbolSize);
            }
@@ -182,35 +192,29 @@ public class TicTacToeGUI extends JFrame{
        //Print status bar message
        if(currentState == GameState.Playing){
          statusBar.setForeground(Color.BLACK);
-         if(currentPlayer == Symbol.Cross){
-           statusBar.setText("X's Turn");
-         }
-         else{
-           statusBar.setText("O's Turn");
-         }
+         statusBar.setText("Keep playing! :)");
        }
-       else if(currentState == GameState.Draw){
+       else if(currentState == GameState.Won){
          statusBar.setForeground(Color.RED);
-         statusBar.setText("It's a Draw! Click to play again.");
-       }
-       else if(currentState == GameState.CrossWon){
-         statusBar.setForeground(Color.RED);
-         statusBar.setText("'X' Won! Click to play again.");
-       }
-       else if(currentState == GameState.NoughtWon){
-         statusBar.setForeground(Color.RED);
-         statusBar.setText("'O' Won! Click to play again.");
+         statusBar.setText("You've won! Click to play again :)");
        }
      }
    }
 
-   //Main entry method
+   //Main entry method - DONE
    public static void main(String[] args) {
       SwingUtilities.invokeLater(new Runnable() {
          @Override
          public void run() {
-            new TicTacToeGUI();
+            new LightsOutGUI();
          }
       });
    }
 }
+
+
+/* TO WRITE
+- Make a move - L60
+- Different game boards - l90
+- Drawing symbols - L157
+*/
