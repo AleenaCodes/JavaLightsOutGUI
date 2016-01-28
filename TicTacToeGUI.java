@@ -3,7 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 //Tic-Tac-Toe with GUI
-//@SuppressWarnings("serial")
+@SuppressWarnings("serial")
 public class TicTacToeGUI extends JFrame{
   //Constants for game board
   public static final int rows = 3;
@@ -18,8 +18,8 @@ public class TicTacToeGUI extends JFrame{
 
   //Constants for drawing symbols
   public static final int cellPadding = cellSize/6;
-  public static final int symbolSize = cellSize - (cellPadding/2);
-  public static final int symbolStrokeWidth = 8 //pen stroke width
+  public static final int symbolSize = cellSize - (cellPadding*2);
+  public static final int symbolStrokeWidth = 8; //pen stroke width
 
   //Enum for game states
   public enum GameState{
@@ -32,6 +32,7 @@ public class TicTacToeGUI extends JFrame{
   }
 
   private Symbol currentPlayer;
+  private GameState currentState;
 
   private Symbol[][] board; //game board
   private DrawCanvas canvas; //draw canvas for game board
@@ -39,7 +40,7 @@ public class TicTacToeGUI extends JFrame{
 
   //Game and GUI constructor
   public TicTacToeGUI(){
-    canvas = newDrawCanvas(); //construct new canvas
+    canvas = new DrawCanvas(); //construct new canvas
     canvas.setPreferredSize(new Dimension(canvasWidth, canvasHeight));
 
     //Canvas fires a MouseEvents upon mouselick
@@ -157,9 +158,9 @@ public class TicTacToeGUI extends JFrame{
        }
 
        //Draw symbols in cells if not empty
-       Graphics g2d = (Graphics2D)g;
+       Graphics2D g2d = (Graphics2D)g;
        g2d.setStroke(new BasicStroke(symbolStrokeWidth, BasicStroke.CAP_ROUND,
-        BasicStroke.JOIN_ROUND));
+               BasicStroke.JOIN_ROUND));
        for(int row = 0; row < rows; ++row){
          for(int col = 0; col < cols; ++col){
            int x1 = col * cellSize + cellPadding;
@@ -180,7 +181,7 @@ public class TicTacToeGUI extends JFrame{
 
        //Print status bar message
        if(currentState == GameState.Playing){
-         statusBar.setForeground(Color.Black);
+         statusBar.setForeground(Color.BLACK);
          if(currentPlayer == Symbol.Cross){
            statusBar.setText("X's Turn");
          }
@@ -208,7 +209,7 @@ public class TicTacToeGUI extends JFrame{
       SwingUtilities.invokeLater(new Runnable() {
          @Override
          public void run() {
-            new TTTGraphics2P();
+            new TicTacToeGUI();
          }
       });
    }
