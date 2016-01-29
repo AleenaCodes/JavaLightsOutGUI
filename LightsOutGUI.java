@@ -17,7 +17,7 @@ public class LightsOutGUI extends JFrame{
   public static final int gridWidthHalf = gridWidth/2;
 
   //Constants for drawing symbols - DONE
-  public static final int cellPadding = cellSize/6;
+  public static final int cellPadding = 4;
   public static final int symbolSize = cellSize - (cellPadding*2);
   public static final int symbolStrokeWidth = 8; //pen stroke width
 
@@ -125,18 +125,6 @@ public class LightsOutGUI extends JFrame{
     //Otherwise no change to state
   }
 
-  //Return true if game is a draw - UNUSED?
-  /*public boolean isDraw() {
-      for (int row = 0; row < rows; ++row) {
-         for (int col = 0; col < cols; ++col) {
-            if (board[row][col] == Symbol.Empty) {
-               return false; // empty cell found - not draw - exit
-            }
-         }
-      }
-      return true;  // no more empty cells - draw
-   }*/
-
    //Return true if player has won - DONE
    public boolean hasWon(int rowSelected, int colSelected) {
      for (int row = 0; row < rows; ++row) {
@@ -149,7 +137,7 @@ public class LightsOutGUI extends JFrame{
      return true; //else all lights off - player has won!
    }
 
-   //Class used for custom graphics drawing - DONE, REMAKE SYMBOLS
+   //Class used for custom graphics drawing - DONE
    class DrawCanvas extends JPanel{
      @Override
      public void paintComponent(Graphics g){
@@ -176,15 +164,12 @@ public class LightsOutGUI extends JFrame{
            int x1 = col * cellSize + cellPadding;
            int y1 = row * cellSize + cellPadding;
            if(board[row][col] == Symbol.White){
-             g2d.setColor(Color.RED);
-             int x2 = (col+1) * cellSize - cellPadding;
-             int y2 = (row+1) * cellSize - cellPadding;
-             g2d.drawLine(x1, y1, x2, y2);
-             g2d.drawLine(x2, y1, x1, y2);
+             g2d.setColor(Color.WHITE);
+             g2d.fillRect(x1, y1, symbolSize, symbolSize);
            }
            else if(board[row][col] == Symbol.Black){
-             g2d.setColor(Color.BLUE);
-             g2d.drawOval(x1, y1, symbolSize, symbolSize);
+             g2d.setColor(Color.BLACK);
+             g2d.fillRect(x1, y1, symbolSize, symbolSize);
            }
          }
        }
@@ -214,7 +199,5 @@ public class LightsOutGUI extends JFrame{
 
 
 /* TO WRITE
-- Make a move - L60
 - Different game boards - l90
-- Drawing symbols - L157
 */
