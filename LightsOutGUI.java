@@ -60,6 +60,8 @@ public class LightsOutGUI extends JFrame{
               //make move
               int r = rowSelected;
               int c = colSelected;
+                if(board[r][c] == Symbol.White){board[r][c] = Symbol.Black;}
+                else{board[r][c] = Symbol.White;}
               if(r != 0){
                 if(board[r-1][c] == Symbol.White){board[r-1][c] = Symbol.Black;}
                 else{board[r-1][c] = Symbol.White;}
@@ -108,6 +110,38 @@ public class LightsOutGUI extends JFrame{
 
 
   //Initialise game board contents and status - DONE - MAKE GAME BOARD
+
+  public void initGame(){
+    board[0][0] = Symbol.White;
+    board[0][1] = Symbol.White;
+    board[0][2] = Symbol.White;
+    board[0][3] = Symbol.White;
+    board[0][4] = Symbol.Black;
+    board[1][0] = Symbol.Black;
+    board[1][1] = Symbol.White;
+    board[1][2] = Symbol.Black;
+    board[1][3] = Symbol.White;
+    board[1][4] = Symbol.White;
+    board[2][0] = Symbol.White;
+    board[2][1] = Symbol.Black;
+    board[2][2] = Symbol.White;
+    board[2][3] = Symbol.Black;
+    board[2][4] = Symbol.White;
+    board[3][0] = Symbol.White;
+    board[3][1] = Symbol.White;
+    board[3][2] = Symbol.White;
+    board[3][3] = Symbol.Black;
+    board[3][4] = Symbol.Black;
+    board[4][0] = Symbol.Black;
+    board[4][1] = Symbol.Black;
+    board[4][2] = Symbol.White;
+    board[4][3] = Symbol.White;
+    board[4][4] = Symbol.Black;
+
+    currentState = GameState.Playing;
+  }
+
+  /*OLD INIT GAME
   public void initGame(){
     for(int row = 0; row < rows; ++row){
       for(int col = 0; col < cols; ++col){
@@ -116,6 +150,7 @@ public class LightsOutGUI extends JFrame{
     }
     currentState = GameState.Playing; //ready to play
   }
+  */
 
   //Update currentState after player has made move - DONE
   public void updateGame(int rowSelected, int colSelected){
