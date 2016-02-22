@@ -106,51 +106,20 @@ public class LightsOutGUI extends JFrame{
     initGame(); //initialise game board contents and game variables
   }
 
-  //Change cell
-
-
   //Initialise game board contents and status - DONE - MAKE GAME BOARD
 
   public void initGame(){
-    board[0][0] = Symbol.White;
-    board[0][1] = Symbol.White;
-    board[0][2] = Symbol.White;
-    board[0][3] = Symbol.White;
-    board[0][4] = Symbol.Black;
-    board[1][0] = Symbol.Black;
-    board[1][1] = Symbol.Black;
-    board[1][2] = Symbol.Black;
-    board[1][3] = Symbol.Black;
-    board[1][4] = Symbol.Black;
-    board[2][0] = Symbol.Black;
-    board[2][1] = Symbol.Black;
-    board[2][2] = Symbol.Black;
-    board[2][3] = Symbol.White;
-    board[2][4] = Symbol.Black;
-    board[3][0] = Symbol.White;
-    board[3][1] = Symbol.Black;
-    board[3][2] = Symbol.Black;
-    board[3][3] = Symbol.Black;
-    board[3][4] = Symbol.White;
-    board[4][0] = Symbol.Black;
-    board[4][1] = Symbol.White;
-    board[4][2] = Symbol.Black;
-    board[4][3] = Symbol.White;
-    board[4][4] = Symbol.Black;
-
+    int i = (int)Math.floor(Math.random()*2);
+    switch(i){
+      case 0 : board1(); break;
+      case 1 : board2(); break;
+      /*case 2 : board3(); break;
+      case 3 : board4(); break;
+      case 4 : board5(); break;*/
+      default : board1();
+    }
     currentState = GameState.Playing;
   }
-
-  /*OLD INIT GAME
-  public void initGame(){
-    for(int row = 0; row < rows; ++row){
-      for(int col = 0; col < cols; ++col){
-        board[row][col] = Symbol.White; //all lights on
-      }
-    }
-    currentState = GameState.Playing; //ready to play
-  }
-  */
 
   //Update currentState after player has made move - DONE
   public void updateGame(int rowSelected, int colSelected){
@@ -230,8 +199,63 @@ public class LightsOutGUI extends JFrame{
          }
       });
    }
-}
 
+   void board1(){
+     board[0][0] = Symbol.White;
+     board[0][1] = Symbol.White;
+     board[0][2] = Symbol.White;
+     board[0][3] = Symbol.White;
+     board[0][4] = Symbol.Black;
+     board[1][0] = Symbol.Black;
+     board[1][1] = Symbol.Black;
+     board[1][2] = Symbol.Black;
+     board[1][3] = Symbol.Black;
+     board[1][4] = Symbol.Black;
+     board[2][0] = Symbol.Black;
+     board[2][1] = Symbol.Black;
+     board[2][2] = Symbol.Black;
+     board[2][3] = Symbol.White;
+     board[2][4] = Symbol.Black;
+     board[3][0] = Symbol.White;
+     board[3][1] = Symbol.Black;
+     board[3][2] = Symbol.Black;
+     board[3][3] = Symbol.Black;
+     board[3][4] = Symbol.White;
+     board[4][0] = Symbol.Black;
+     board[4][1] = Symbol.White;
+     board[4][2] = Symbol.Black;
+     board[4][3] = Symbol.White;
+     board[4][4] = Symbol.Black;
+   }
+
+   void board2(){
+     board[0][0] = Symbol.White;
+     board[0][1] = Symbol.White;
+     board[0][2] = Symbol.White;
+     board[0][3] = Symbol.White;
+     board[0][4] = Symbol.White;
+     board[1][0] = Symbol.Black;
+     board[1][1] = Symbol.Black;
+     board[1][2] = Symbol.Black;
+     board[1][3] = Symbol.Black;
+     board[1][4] = Symbol.Black;
+     board[2][0] = Symbol.Black;
+     board[2][1] = Symbol.Black;
+     board[2][2] = Symbol.Black;
+     board[2][3] = Symbol.White;
+     board[2][4] = Symbol.Black;
+     board[3][0] = Symbol.White;
+     board[3][1] = Symbol.Black;
+     board[3][2] = Symbol.Black;
+     board[3][3] = Symbol.Black;
+     board[3][4] = Symbol.White;
+     board[4][0] = Symbol.Black;
+     board[4][1] = Symbol.White;
+     board[4][2] = Symbol.Black;
+     board[4][3] = Symbol.White;
+     board[4][4] = Symbol.Black;
+   }
+}
 
 /* TO WRITE
 - Different game boards - l90
